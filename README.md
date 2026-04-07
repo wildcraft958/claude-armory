@@ -1,6 +1,23 @@
 # claude-armory
 
-Your full loadout for serious dev work.
+```
+   \   |   /         claude-armory
+    \  |  /          your full loadout for serious dev work
+     \ | /           ──────────────────────────────────────────────────
+  ----\|/----        Commands    9   /debug /review /ship /test
+  ----/|\----                        /explain /agent /init
+     / | \                           /caveman /caveman-compress
+    /  |  \          Hooks       4   block-destructive    PreToolUse
+   /   |   \                         post-edit-verify     PostToolUse
+       |                             truncation-check     PostToolUse
+   C L A U D E                       stop-verify          Stop
+   A R M O R Y      Agent Docs  7   debug · arch · ml_patterns
+                                     api · database · safety · axon
+                    MCP         7   github · supabase · playwright
+                                     axon · repomix · ddgs · langchain
+                    Stack            Python · TypeScript · Rust
+                    Effort           alwaysThinking=true  level=high
+```
 
 Custom slash commands, safety hooks, deep-dive agent docs, caveman token compression, and MCP config — a production-grade Claude Code setup that keeps the agent accountable to senior-dev standards.
 
