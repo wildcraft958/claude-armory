@@ -16,8 +16,8 @@ Built and battle-tested by [Animesh Raj](https://github.com/wildcraft958).
 | `hooks/` | Auto-run safety checks on every tool call — Claude cannot skip them |
 | `commands/` | Custom slash commands (`/debug`, `/review`, `/ship`, and more) |
 | `agent_docs/` | Deep-dive reference docs Claude reads before starting work on a topic |
-| `skills/caveman/` | Cuts output tokens ~75% — Claude talks like caveman, brain still big |
-| `skills/caveman-compress/` | Compresses your CLAUDE.md / memory files to cut input tokens ~45% |
+| `commands/caveman.md` | `/caveman` — cuts output tokens ~75%, Claude talks like caveman, brain still big |
+| `commands/caveman-compress.md` | `/caveman-compress <file>` — compresses CLAUDE.md / memory files, cuts input tokens ~45% |
 | `settings.json` | Hooks wiring, status line, model config |
 
 ---
@@ -58,6 +58,8 @@ Credit: [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) — MI
 | `/explain` | Explain code at 4 levels: TL;DR, How it works, Connections, Gotchas |
 | `/agent` | Scaffold a LangGraph agent with safety rails |
 | `/init` | Scaffold a project-level Claude Code setup for any stack |
+| `/caveman` | Talk like caveman — drop filler, keep full accuracy. Supports `lite`, `full`, `ultra` |
+| `/caveman-compress` | Compress a CLAUDE.md or memory file to save input tokens per session |
 
 ---
 
