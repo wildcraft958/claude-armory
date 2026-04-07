@@ -2,7 +2,7 @@
 
 Your full loadout for serious dev work.
 
-Custom slash commands, safety hooks, deep-dive agent docs, and MCP config — a production-grade Claude Code setup that keeps the agent accountable to senior-dev standards.
+Custom slash commands, safety hooks, deep-dive agent docs, caveman token compression, and MCP config — a production-grade Claude Code setup that keeps the agent accountable to senior-dev standards.
 
 Built and battle-tested by [Animesh Raj](https://github.com/wildcraft958).
 
@@ -16,7 +16,34 @@ Built and battle-tested by [Animesh Raj](https://github.com/wildcraft958).
 | `hooks/` | Auto-run safety checks on every tool call — Claude cannot skip them |
 | `commands/` | Custom slash commands (`/debug`, `/review`, `/ship`, and more) |
 | `agent_docs/` | Deep-dive reference docs Claude reads before starting work on a topic |
+| `skills/caveman/` | Cuts output tokens ~75% — Claude talks like caveman, brain still big |
+| `skills/caveman-compress/` | Compresses your CLAUDE.md / memory files to cut input tokens ~45% |
 | `settings.json` | Hooks wiring, status line, model config |
+
+---
+
+## Caveman — Token Compression
+
+Bundled from [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) — the viral skill that cuts ~75% of output tokens without losing technical accuracy.
+
+**Before** (69 tokens):
+> "The reason your React component is re-rendering is likely because you're creating a new object reference on each render cycle. When you pass an inline object as a prop, React's shallow comparison sees it as a different object every time, which triggers a re-render. I'd recommend using useMemo to memoize the object."
+
+**After** (19 tokens):
+> "New object ref each render. Inline object prop = new ref = re-render. Wrap in `useMemo`."
+
+Same fix. 75% fewer tokens. Brain still big.
+
+| Skill | Trigger | What it cuts | Savings |
+|-------|---------|-------------|---------|
+| `caveman` | `/caveman` or "talk like caveman" | Output tokens (Claude's responses) | ~65-75% |
+| `caveman-compress` | `/caveman-compress CLAUDE.md` | Input tokens (memory files per session) | ~45% |
+
+**Intensity levels** — `/caveman lite`, `/caveman full` (default), `/caveman ultra`
+
+Stop with: "stop caveman" or "normal mode"
+
+Credit: [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) — MIT license
 
 ---
 
@@ -91,7 +118,8 @@ The installer:
 2. Copies hooks to `~/.claude/hooks/` and makes them executable
 3. Copies slash commands to `~/.claude/commands/`
 4. Copies agent docs to `~/.claude/agent_docs/`
-5. Generates `~/.claude/settings.json` with correct absolute paths
+5. Copies caveman skills to `~/.claude/skills/`
+6. Generates `~/.claude/settings.json` with correct absolute paths
 
 Restart Claude Code after installing.
 

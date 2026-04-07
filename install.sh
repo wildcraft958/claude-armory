@@ -12,7 +12,7 @@ echo "========================"
 echo "Target: $CLAUDE_DIR"
 echo ""
 
-mkdir -p "$CLAUDE_DIR/hooks" "$CLAUDE_DIR/commands" "$CLAUDE_DIR/agent_docs"
+mkdir -p "$CLAUDE_DIR/hooks" "$CLAUDE_DIR/commands" "$CLAUDE_DIR/agent_docs" "$CLAUDE_DIR/skills/caveman" "$CLAUDE_DIR/skills/caveman-compress"
 
 # CLAUDE.md
 if [ -f "$CLAUDE_DIR/CLAUDE.md" ]; then
@@ -51,6 +51,12 @@ for doc in "$REPO_DIR/agent_docs/"*.md; do
   cp "$doc" "$CLAUDE_DIR/agent_docs/$name"
   echo "  agent_docs/$name"
 done
+
+# Caveman skills
+cp "$REPO_DIR/skills/caveman/SKILL.md" "$CLAUDE_DIR/skills/caveman/SKILL.md"
+echo "  skills/caveman/SKILL.md"
+cp "$REPO_DIR/skills/caveman-compress/SKILL.md" "$CLAUDE_DIR/skills/caveman-compress/SKILL.md"
+echo "  skills/caveman-compress/SKILL.md"
 
 # settings.json — replace CLAUDE_DIR placeholder with real path
 SETTINGS_DST="$CLAUDE_DIR/settings.json"
