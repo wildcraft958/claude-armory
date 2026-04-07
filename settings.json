@@ -1,0 +1,59 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_DIR/hooks/block-destructive.sh",
+            "timeout": 5,
+            "statusMessage": "Checking command safety..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_DIR/hooks/post-edit-verify.sh",
+            "timeout": 120,
+            "statusMessage": "Verifying edit..."
+          }
+        ]
+      },
+      {
+        "matcher": "Grep|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_DIR/hooks/truncation-check.sh",
+            "timeout": 5,
+            "statusMessage": "Checking for truncation..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_DIR/hooks/stop-verify.sh",
+            "timeout": 300,
+            "statusMessage": "Running final verification..."
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccstatusline@latest"
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high"
+}
