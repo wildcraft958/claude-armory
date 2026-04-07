@@ -7,9 +7,27 @@ set -e
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
-echo "claude-armory installer"
-echo "========================"
-echo "Target: $CLAUDE_DIR"
+cat << 'EOF'
+
+   \   |   /         claude-armory
+    \  |  /          your full loadout for serious dev work
+     \ | /           ──────────────────────────────────────────────────
+  ----\|/----        Commands    9   /debug /review /ship /test
+  ----/|\----                        /explain /agent /init
+     / | \                           /caveman /caveman-compress
+    /  |  \          Hooks       4   block-destructive    PreToolUse
+   /   |   \                         post-edit-verify     PostToolUse
+       |                             truncation-check     PostToolUse
+   C L A U D E                       stop-verify          Stop
+   A R M O R Y      Agent Docs  7   debug · arch · ml_patterns
+                                     api · database · safety · axon
+                    MCP         7   github · supabase · playwright
+                                     axon · repomix · ddgs · langchain
+                    Stack            Python · TypeScript · Rust
+                    Effort           alwaysThinking=true  level=high
+
+EOF
+echo "Installing to $CLAUDE_DIR"
 echo ""
 
 mkdir -p "$CLAUDE_DIR/hooks" "$CLAUDE_DIR/commands" "$CLAUDE_DIR/agent_docs"
