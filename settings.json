@@ -45,6 +45,24 @@
             "command": "CLAUDE_DIR/hooks/stop-verify.sh",
             "timeout": 300,
             "statusMessage": "Running final verification..."
+          },
+          {
+            "type": "command",
+            "command": "CLAUDE_DIR/hooks/mempal_save_hook.sh",
+            "timeout": 60,
+            "statusMessage": "Saving session to memory palace..."
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_DIR/hooks/mempal_precompact_hook.sh",
+            "timeout": 120,
+            "statusMessage": "Emergency save before context compression..."
           }
         ]
       }

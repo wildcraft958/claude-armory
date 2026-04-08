@@ -4,14 +4,18 @@
    \   |   /         claude-armory
     \  |  /          your full loadout for serious dev work
      \ | /           ──────────────────────────────────────────────────
-  ----\|/----        Commands    9   /debug /review /ship /test
-  ----/|\----                        /explain /agent /init
-     / | \                           /caveman /caveman-compress
-    /  |  \          Hooks       4   block-destructive    PreToolUse
+  ----\|/----        Commands   11   /debug /review /ship /test
+  ----/|\----                        /explain /agent /init /audit
+     / | \                           /retire /caveman /caveman-compress
+    /  |  \          Hooks       7   block-destructive    PreToolUse
    /   |   \                         post-edit-verify     PostToolUse
        |                             truncation-check     PostToolUse
    C L A U D E                       stop-verify          Stop
-   A R M O R Y      Agent Docs  7   debug · arch · ml_patterns
+   A R M O R Y                       mempal-save          Stop
+                                     mempal-precompact    PreCompact
+                                     mempal-maintenance   (cron)
+                    Memory           MemPalace — local ChromaDB palace
+                    Agent Docs  7   debug · arch · ml_patterns
                                      api · database · safety · axon
                     MCP         7   github · supabase · playwright
                                      axon · repomix · ddgs · langchain
@@ -35,6 +39,11 @@ Built and battle-tested by [Animesh Raj](https://github.com/wildcraft958).
 | `agent_docs/` | Deep-dive reference docs Claude reads before starting work on a topic |
 | `commands/caveman.md` | `/caveman` — cuts output tokens ~75%, Claude talks like caveman, brain still big |
 | `commands/caveman-compress.md` | `/caveman-compress <file>` — compresses CLAUDE.md / memory files, cuts input tokens ~45% |
+| `commands/audit.md` | `/audit` — 6-phase codebase security and logic audit, OWASP Top 10, no explore agent |
+| `commands/retire.md` | `/retire` — 10-step project retirement: secrets, data, code, infra in correct order |
+| `hooks/mempal_save_hook.sh` | Auto-saves session to MemPalace on Stop (every 15 human messages) |
+| `hooks/mempal_precompact_hook.sh` | Emergency save to MemPalace before context compression |
+| `hooks/mempal_maintenance.sh` | Weekly ChromaDB WAL cleanup, SQLite VACUUM, bloat alert (run via cron) |
 | `settings.json` | Hooks wiring, status line, model config |
 
 ---
@@ -75,8 +84,12 @@ Credit: [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) — MI
 | `/explain` | Explain code at 4 levels: TL;DR, How it works, Connections, Gotchas |
 | `/agent` | Scaffold a LangGraph agent with safety rails |
 | `/init` | Scaffold a project-level Claude Code setup for any stack |
+| `/audit` | 6-phase security + logic audit: OWASP Top 10, scanners, dead code, test gaps |
+| `/retire` | 10-step project retirement checklist — secrets first, then data, code, infra |
 | `/caveman` | Talk like caveman — drop filler, keep full accuracy. Supports `lite`, `full`, `ultra` |
 | `/caveman-compress` | Compress a CLAUDE.md or memory file to save input tokens per session |
+
+**`/audit` vs `/review`**: `/review` is PR-bounded (changed files only, merge decision). `/audit` is systemic — runs bandit, pip-audit, npm audit, grep for injection/XSS/weak crypto across the whole codebase.
 
 ---
 
@@ -90,10 +103,15 @@ These run automatically on every tool call. Claude cannot skip them.
 | `PostToolUse (Write/Edit)` | `post-edit-verify.sh` | Runs eslint or ruff on every edited file — blocks if lint fails |
 | `PostToolUse (Grep/Bash)` | `truncation-check.sh` | Warns when output was truncated (>50K chars) |
 | `Stop` | `stop-verify.sh` | Blocks "Done" unless the project compiles, lints, and tests pass |
+| `Stop` | `mempal_save_hook.sh` | Auto-saves session to MemPalace every 15 human messages |
+| `PreCompact` | `mempal_precompact_hook.sh` | Emergency save to MemPalace before context compression |
+| `cron (Sun 2am)` | `mempal_maintenance.sh` | ChromaDB WAL cleanup, SQLite VACUUM, 300GB bug alert |
 
 **Why hooks matter**
 
 Without hooks, Claude can declare "Done!" after writing code that doesn't compile. With `stop-verify.sh`, the agent is blocked from completing until `tsc`, `ruff`, `mypy`, `pytest`, or `cargo check` all pass — depending on your stack. It's a CI gate that runs before Claude is allowed to declare victory.
+
+**The MemPalace hooks** build persistent memory automatically. Every session is saved to a local ChromaDB palace and recalled at session start. No manual steps after setup.
 
 ---
 
@@ -121,6 +139,32 @@ Claude reads these before starting work on a topic. They save you from re-explai
 - **Commits**: after every change, no co-author, never stage `.claude/` or personal files
 - **Self-correction**: after any mistake, log it to `gotchas.md` and convert it to a rule
 - **MCP-first**: if an MCP tool exists for a task, use it — don't guess or rely on training data
+
+---
+
+## MemPalace — Persistent Memory
+
+The three MemPalace hooks wire autonomous session memory into Claude Code. Every conversation is mined into a local ChromaDB palace and surfaced at the start of the next session.
+
+**What gets saved**: technical decisions, architectural choices, debugging sessions, code patterns — organized by project wing.
+
+**How it works**:
+1. `mempal_save_hook.sh` fires on Stop, checkpoints every 15 human messages
+2. `mempal_precompact_hook.sh` fires on PreCompact (emergency save before context compression)
+3. `mempal_maintenance.sh` runs weekly via cron — cleans ChromaDB WAL, vacuums SQLite, alerts if `~/.claude/file-history/` exceeds 500MB (known catastrophic growth bug)
+
+**Setup** (optional — hooks work without it, but recall requires the palace):
+
+```bash
+pip install mempalace chromadb-ops hnswlib
+mempalace init ~/projects/
+claude mcp add mempalace -- python3 -m mempalace.mcp_server
+
+# Wire cron for weekly maintenance (Sunday 2am)
+(crontab -l 2>/dev/null; echo "0 2 * * 0 /bin/bash ~/.claude/hooks/mempal_maintenance.sh >> ~/.claude/mempal_maintenance.log 2>&1") | crontab -
+```
+
+**Note on the Stop hook "error" display**: Claude Code may show `mempal_save_hook.sh` as an error in the status bar. This is intentional — the hook outputs `{"decision": "block", "reason": "AUTO-SAVE checkpoint..."}` to force Claude to save memory before completing. It is working correctly.
 
 ---
 

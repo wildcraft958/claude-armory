@@ -12,14 +12,18 @@ cat << 'EOF'
    \   |   /         claude-armory
     \  |  /          your full loadout for serious dev work
      \ | /           ──────────────────────────────────────────────────
-  ----\|/----        Commands    9   /debug /review /ship /test
-  ----/|\----                        /explain /agent /init
-     / | \                           /caveman /caveman-compress
-    /  |  \          Hooks       4   block-destructive    PreToolUse
+  ----\|/----        Commands   11   /debug /review /ship /test
+  ----/|\----                        /explain /agent /init /audit
+     / | \                           /retire /caveman /caveman-compress
+    /  |  \          Hooks       7   block-destructive    PreToolUse
    /   |   \                         post-edit-verify     PostToolUse
        |                             truncation-check     PostToolUse
    C L A U D E                       stop-verify          Stop
-   A R M O R Y      Agent Docs  7   debug · arch · ml_patterns
+   A R M O R Y                       mempal-save          Stop
+                                     mempal-precompact    PreCompact
+                                     mempal-maintenance   (cron)
+                    Memory           MemPalace — local ChromaDB palace
+                    Agent Docs  7   debug · arch · ml_patterns
                                      api · database · safety · axon
                     MCP         7   github · supabase · playwright
                                      axon · repomix · ddgs · langchain
@@ -90,3 +94,9 @@ echo "Next steps:"
 echo "  1. Edit ~/.claude/CLAUDE.md — update Author section with your name/email"
 echo "  2. Review ~/.claude/agent_docs/ — remove docs for stacks you don't use"
 echo "  3. Add your MCP servers via: claude mcp add <server>"
+echo ""
+echo "Optional — MemPalace persistent memory:"
+echo "  pip install mempalace chromadb-ops hnswlib"
+echo "  mempalace init ~/projects/"
+echo "  claude mcp add mempalace -- python3 -m mempalace.mcp_server"
+echo "  (crontab -l 2>/dev/null; echo '0 2 * * 0 /bin/bash ~/.claude/hooks/mempal_maintenance.sh >> ~/.claude/mempal_maintenance.log 2>&1') | crontab -"

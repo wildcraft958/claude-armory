@@ -1,4 +1,4 @@
-# Global Rules
+# Global Rules -- Animesh Raj
 
 ## Hierarchy
 
@@ -10,14 +10,15 @@
 
 1. Read the project CLAUDE.md if it exists. Its rules override this file.
 2. Read gotchas.md if it exists. Apply past lessons.
-3. If the project is a git repo, run `axon analyze --no-embeddings` in background.
+3. If the project is a git repo, run `axon analyze` in background.
 4. Check which MCP servers are connected. Note what's available.
-5. Pull latest changes before starting work.
-6. If the task matches an agent doc topic, read the relevant file from `~/.claude/agent_docs/`.
+5. Call `mempalace_status` for palace overview, then `mempalace_kg_query` on the current project to surface relevant history.
+6. Pull latest changes before starting work.
+7. If the task matches an agent doc topic, read the relevant file from `~/.claude/agent_docs/`.
 
 ## Author
 
-Your Name <your@email.com>
+Animesh Raj <animeshraj958@gmail.com>
 
 ## Workflow
 
