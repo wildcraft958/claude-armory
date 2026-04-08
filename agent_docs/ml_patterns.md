@@ -1,5 +1,7 @@
 # ML & AI Patterns
 
+> **Stack:** LangGraph, RAG, pgvector, HuggingFace embeddings. Skip this doc for projects with no AI/ML components.
+
 Reference for LangGraph agents, model loading, RAG pipelines, and embeddings. Read this when building AI features.
 
 ## LangGraph Agent Patterns

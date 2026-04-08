@@ -103,7 +103,7 @@ These run automatically on every tool call. Claude cannot skip them.
 | `PostToolUse (Write/Edit)` | `post-edit-verify.sh` | Runs eslint or ruff on every edited file — blocks if lint fails |
 | `PostToolUse (Grep/Bash)` | `truncation-check.sh` | Warns when output was truncated (>50K chars) |
 | `Stop` | `stop-verify.sh` | Blocks "Done" unless the project compiles, lints, and tests pass |
-| `Stop` | `mempal_save_hook.sh` | Auto-saves session to MemPalace every 15 human messages |
+| `Stop` | `mempal_save_hook.sh` | Auto-saves session to MemPalace every 40 human messages |
 | `PreCompact` | `mempal_precompact_hook.sh` | Emergency save to MemPalace before context compression |
 | `cron (Sun 2am)` | `mempal_maintenance.sh` | ChromaDB WAL cleanup, SQLite VACUUM, 300GB bug alert |
 
@@ -112,6 +112,8 @@ These run automatically on every tool call. Claude cannot skip them.
 Without hooks, Claude can declare "Done!" after writing code that doesn't compile. With `stop-verify.sh`, the agent is blocked from completing until `tsc`, `ruff`, `mypy`, `pytest`, or `cargo check` all pass — depending on your stack. It's a CI gate that runs before Claude is allowed to declare victory.
 
 **The MemPalace hooks** build persistent memory automatically. Every session is saved to a local ChromaDB palace and recalled at session start. No manual steps after setup.
+
+**`mempal_wing_detect.sh`** is called at session start in CLAUDE.md. It greps `~/.mempalace/wing_config.json` for keywords matching the current project directory name and git remote URL. If a wing matches, MemPalace history is loaded. If not, palace calls are skipped entirely — no wasted time loading ChromaDB on unrecognized projects.
 
 **Lite mode (low-resource machines)**
 
@@ -134,15 +136,17 @@ Type-checking and linting still run at Stop. This is not "no verification" — i
 
 Claude reads these before starting work on a topic. They save you from re-explaining your conventions on every session.
 
-| File | Read when... |
-|------|-------------|
-| `debug_guide.md` | Debugging Python, FastAPI, LangGraph, React, Supabase |
-| `architecture.md` | Building features, understanding project structure |
-| `ml_patterns.md` | LangGraph agents, RAG pipelines, embeddings |
-| `api_conventions.md` | FastAPI routes, auth patterns, error formats |
-| `database.md` | Supabase queries, RLS policies, migrations, pgvector |
-| `context_and_safety.md` | Context management, edit safety, hook behavior |
-| `axon_guide.md` | Axon MCP tools for refactors and blast-radius analysis |
+Each doc has a `> Stack:` line at the top. Claude skips docs whose stack doesn't match the current project — no noise for plain CRUD apps from LangGraph patterns.
+
+| File | Stack | Read when... |
+|------|-------|-------------|
+| `debug_guide.md` | Python / FastAPI / LangGraph / React / Supabase | Debugging errors |
+| `architecture.md` | FastAPI + React (full-stack) | Building features, project structure |
+| `ml_patterns.md` | LangGraph, RAG, pgvector, HuggingFace | Building AI features |
+| `api_conventions.md` | FastAPI (Python) | Building or modifying API endpoints |
+| `database.md` | Supabase + pgvector | Working with the database layer |
+| `context_and_safety.md` | Any | Context management, edit safety, hook behavior |
+| `axon_guide.md` | Any | Refactors, renames, blast-radius analysis |
 
 ---
 

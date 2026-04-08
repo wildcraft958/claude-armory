@@ -1,5 +1,7 @@
 # Architecture Patterns
 
+> **Stack:** FastAPI + React (full-stack Python/TS). Structure principles are broadly applicable; backend-specific sections assume FastAPI.
+
 Reference for project structure and feature scaffolding. Read this when building new features or understanding an unfamiliar project layout.
 
 ## Python Backend (FastAPI)

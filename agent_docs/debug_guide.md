@@ -1,5 +1,7 @@
 # Debug Guide
 
+> **Stack:** Python / FastAPI / LangGraph / React / Supabase. General debugging principles apply to any stack; skip stack-specific sections that don't match.
+
 Reference guide for debugging across the stack. Read this when diagnosing errors.
 
 ## Python / FastAPI

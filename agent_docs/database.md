@@ -1,5 +1,7 @@
 # Database Patterns (Supabase)
 
+> **Stack:** Supabase + pgvector (PostgreSQL). Skip this doc for projects using SQLite, MongoDB, Prisma, or non-Supabase Postgres.
+
 Reference for Supabase queries, RLS policies, migrations, and pgvector. Read this when working with the database layer.
 
 ## Supabase Client Setup

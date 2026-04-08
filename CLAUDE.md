@@ -8,13 +8,13 @@
 
 ## Session Start
 
-1. Read the project CLAUDE.md if it exists. Its rules override this file.
+1. Read the project CLAUDE.md if it exists. Its rules override this file. If it does NOT exist and the task is non-trivial (not a quick question), say: "No project CLAUDE.md found. Run /init to scaffold one, or confirm you want to proceed with global rules only."
 2. Read gotchas.md if it exists. Apply past lessons.
 3. Do NOT run `axon analyze` automatically. Run it in background only when the task involves: refactoring across files, renaming symbols, blast-radius analysis, architecture review, or dead code detection. For simple fixes, questions, or docs — skip it.
 4. Check which MCP servers are connected. Note what's available.
-5. Check if the current project has a MemPalace wing: look for the project directory name in `~/.mempalace/wing_config.json` keywords. If matched, call `mempalace_kg_query` to surface relevant history. If no match or this is a one-off question in an unknown directory — skip both calls.
+5. Run `bash ~/.claude/hooks/mempal_wing_detect.sh` to detect the matching palace wing. If it prints a wing name, call `mempalace_kg_query` for that wing to surface relevant history. If no output — no match, skip palace calls entirely.
 6. Pull latest changes before starting work.
-7. If the task matches an agent doc topic, read the relevant file from `~/.claude/agent_docs/`.
+7. If the task matches an agent doc topic, read the relevant file from `~/.claude/agent_docs/`. Skip docs that are stack-specific to a stack not used in this project (e.g. skip ml_patterns.md for a plain CRUD app).
 
 ## Author
 

@@ -1,5 +1,7 @@
 # Context Management & Edit Safety
 
+> **Stack:** Any. These rules apply to all projects regardless of language or framework.
+
 Detailed rules for safe file editing and context management. These are enforced by hooks but understanding them helps avoid blocked operations.
 
 ## Context Management

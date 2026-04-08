@@ -1,5 +1,7 @@
 # Axon Code Intelligence Guide
 
+> **Stack:** Any. Axon works on Python, TypeScript, Rust, and Go codebases. Requires `axon analyze` to have been run first.
+
 Full reference for using Axon MCP tools for code analysis. Read this before refactors, renames, or blast-radius analysis.
 
 ## When to Use Axon (Instead of grep)

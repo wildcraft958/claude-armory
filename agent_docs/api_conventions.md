@@ -1,5 +1,7 @@
 # API Conventions
 
+> **Stack:** FastAPI (Python). Skip this doc for Node/Express, Django, or non-Python backends.
+
 Reference for FastAPI routes, auth patterns, and error handling. Read this when building or modifying API endpoints.
 
 ## Route Structure
