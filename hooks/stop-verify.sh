@@ -19,6 +19,12 @@ if [ "$STOP_ACTIVE" = "true" ]; then
   exit 0
 fi
 
+# Lite mode: ~/.claude/.lite present → skip test suite, keep type-check + lint only.
+# Create with: touch ~/.claude/.lite
+# Remove to restore full verification.
+LITE_MODE=false
+[ -f "$HOME/.claude/.lite" ] && LITE_MODE=true
+
 ERRORS=""
 CHECKS_RUN=0
 
@@ -68,26 +74,28 @@ if [ -f "Cargo.toml" ]; then
   fi
 fi
 
-# --- Test suite ---
-TEST_RUNNER=""
-if [ -f "package.json" ]; then
-  HAS_TEST=$(jq -r '.scripts.test // empty' package.json 2>/dev/null)
-  if [ -n "$HAS_TEST" ] && [ "$HAS_TEST" != "echo \"Error: no test specified\" && exit 1" ]; then
-    TEST_RUNNER="npm test"
+# --- Test suite (skipped in lite mode) ---
+if [ "$LITE_MODE" = "false" ]; then
+  TEST_RUNNER=""
+  if [ -f "package.json" ]; then
+    HAS_TEST=$(jq -r '.scripts.test // empty' package.json 2>/dev/null)
+    if [ -n "$HAS_TEST" ] && [ "$HAS_TEST" != "echo \"Error: no test specified\" && exit 1" ]; then
+      TEST_RUNNER="npm test"
+    fi
+  elif [ -f "pytest.ini" ] || [ -f "pyproject.toml" ]; then
+    if command -v pytest &> /dev/null; then
+      TEST_RUNNER="pytest --tb=short -q"
+    fi
+  elif [ -f "Cargo.toml" ]; then
+    TEST_RUNNER="cargo test"
   fi
-elif [ -f "pytest.ini" ] || [ -f "pyproject.toml" ]; then
-  if command -v pytest &> /dev/null; then
-    TEST_RUNNER="pytest --tb=short -q"
-  fi
-elif [ -f "Cargo.toml" ]; then
-  TEST_RUNNER="cargo test"
-fi
 
-if [ -n "$TEST_RUNNER" ]; then
-  CHECKS_RUN=$((CHECKS_RUN + 1))
-  TEST_OUTPUT=$(eval "$TEST_RUNNER" 2>&1)
-  if [ $? -ne 0 ]; then
-    ERRORS="${ERRORS}TESTS FAILED ($TEST_RUNNER):\n$(echo "$TEST_OUTPUT" | tail -30)\n\n"
+  if [ -n "$TEST_RUNNER" ]; then
+    CHECKS_RUN=$((CHECKS_RUN + 1))
+    TEST_OUTPUT=$(eval "$TEST_RUNNER" 2>&1)
+    if [ $? -ne 0 ]; then
+      ERRORS="${ERRORS}TESTS FAILED ($TEST_RUNNER):\n$(echo "$TEST_OUTPUT" | tail -30)\n\n"
+    fi
   fi
 fi
 

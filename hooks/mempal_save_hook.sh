@@ -52,7 +52,7 @@
 #
 # === CONFIGURATION ===
 
-SAVE_INTERVAL=15  # Save every N human messages (adjust to taste)
+SAVE_INTERVAL=40  # Save every N human messages (raised from 15 for low-resource machines)
 STATE_DIR="$HOME/.mempalace/hook_state"
 mkdir -p "$STATE_DIR"
 

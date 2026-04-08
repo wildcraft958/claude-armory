@@ -10,9 +10,9 @@
 
 1. Read the project CLAUDE.md if it exists. Its rules override this file.
 2. Read gotchas.md if it exists. Apply past lessons.
-3. If the project is a git repo, run `axon analyze` in background.
+3. Do NOT run `axon analyze` automatically. Run it in background only when the task involves: refactoring across files, renaming symbols, blast-radius analysis, architecture review, or dead code detection. For simple fixes, questions, or docs — skip it.
 4. Check which MCP servers are connected. Note what's available.
-5. Call `mempalace_status` for palace overview, then `mempalace_kg_query` on the current project to surface relevant history.
+5. Check if the current project has a MemPalace wing: look for the project directory name in `~/.mempalace/wing_config.json` keywords. If matched, call `mempalace_kg_query` to surface relevant history. If no match or this is a one-off question in an unknown directory — skip both calls.
 6. Pull latest changes before starting work.
 7. If the task matches an agent doc topic, read the relevant file from `~/.claude/agent_docs/`.
 
@@ -73,6 +73,17 @@ Animesh Raj <animeshraj958@gmail.com>
 - After any correction: log the pattern to gotchas.md. Convert mistakes into rules.
 - Review gotchas.md at session start.
 - If a fix doesn't work after two attempts: stop. Read the entire section. State where your mental model was wrong.
+
+## Lite Mode (Potato PC)
+
+`~/.claude/.lite` controls hook weight. When this file exists:
+- `post-edit-verify.sh` skips per-edit lint (saves 2-5s per edit)
+- `stop-verify.sh` skips test suite (keeps type-check + lint, skips pytest/npm test/cargo test)
+
+Toggle: `touch ~/.claude/.lite` (on) / `rm ~/.claude/.lite` (off)
+Currently: enabled (file exists).
+
+Axon and MemPalace are demand-driven regardless of lite mode (see Session Start rules above).
 
 ## Deep-Dive Docs (~/.claude/agent_docs/)
 

@@ -113,6 +113,21 @@ Without hooks, Claude can declare "Done!" after writing code that doesn't compil
 
 **The MemPalace hooks** build persistent memory automatically. Every session is saved to a local ChromaDB palace and recalled at session start. No manual steps after setup.
 
+**Lite mode (low-resource machines)**
+
+Create `~/.claude/.lite` to reduce hook overhead:
+
+```bash
+touch ~/.claude/.lite   # enable lite mode
+rm ~/.claude/.lite      # disable (restore full verification)
+```
+
+When `.lite` is present:
+- `post-edit-verify.sh` skips per-edit linting (saves 2-5s per edit)
+- `stop-verify.sh` skips the test suite (keeps type-check + lint, skips pytest/npm test/cargo test)
+
+Type-checking and linting still run at Stop. This is not "no verification" — it's "no tests on every save".
+
 ---
 
 ## Agent Docs
@@ -139,6 +154,7 @@ Claude reads these before starting work on a topic. They save you from re-explai
 - **Commits**: after every change, no co-author, never stage `.claude/` or personal files
 - **Self-correction**: after any mistake, log it to `gotchas.md` and convert it to a rule
 - **MCP-first**: if an MCP tool exists for a task, use it — don't guess or rely on training data
+- **Demand-driven loading**: `axon analyze` only runs before structural work (refactors, blast-radius, architecture). MemPalace is only queried when the current project matches a known palace wing. Neither runs on simple Q&A sessions.
 
 ---
 

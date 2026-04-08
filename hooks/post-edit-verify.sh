@@ -13,6 +13,11 @@
 
 INPUT=$(cat)
 
+# Lite mode: ~/.claude/.lite present → skip per-edit lint entirely.
+# Type-check + full lint still runs at Stop via stop-verify.sh.
+# Create with: touch ~/.claude/.lite
+[ -f "$HOME/.claude/.lite" ] && exit 0
+
 # Extract the file path from the tool event
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.filePath // empty')
 
