@@ -2,7 +2,7 @@
   "name": "armory",
   "displayName": "claude-armory",
   "version": "2.0.0",
-  "description": "Personal Claude Code loadout: workflow skills, path-scoped rules, one changed-files verification hook, and declarative safety permissions.",
+  "description": "Personal Claude Code loadout: 12 on-demand workflow and reference skills, one changed-files verification hook, and declarative safety permissions. Leans on Claude Code's built-ins rather than duplicating them.",
   "author": {
     "name": "Animesh Raj",
     "email": "animeshraj958@gmail.com",

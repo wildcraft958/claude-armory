@@ -9,7 +9,7 @@
     {
       "name": "armory",
       "displayName": "claude-armory",
-      "description": "Personal Claude Code loadout: workflow skills, path-scoped rules, one changed-files verification hook, and declarative safety permissions.",
+      "description": "Personal Claude Code loadout: 12 on-demand workflow and reference skills, one changed-files verification hook, and declarative safety permissions. Leans on Claude Code's built-ins rather than duplicating them.",
       "keywords": [
         "workflow",
         "tdd",
@@ -19,5 +19,5 @@
       "source": "./"
     }
   ],
-  "description": "Animesh Raj's personal Claude Code loadout: workflow skills, path-scoped conventions, one changed-files verification hook, and declarative safety permissions. Built to lean on Claude Code's built-ins rather than duplicate them."
+  "description": "Animesh Raj's personal Claude Code loadout. Skills, one verification hook, and declarative permissions, built to lean on Claude Code's built-ins rather than duplicate them."
 }
