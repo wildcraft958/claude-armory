@@ -63,7 +63,19 @@ claude mcp add --scope user repomix -- npx -y repomix --mcp
 claude mcp add --scope user axon -- axon mcp      # needs the axon binary installed
 ```
 
-Update later with `/plugin update armory`.
+Update later with the **qualified** name:
+
+```bash
+claude plugin update armory@claude-armory
+```
+
+The bare `armory` resolves for `plugin list` and `plugin details` but not for `plugin update`,
+which reports "Plugin not found". To pick up a new commit, refresh the marketplace cache first:
+
+```bash
+claude plugin marketplace update claude-armory
+claude plugin update armory@claude-armory
+```
 
 **Prerequisites:** `jq` and `git` for the hook, `ruff` for Python linting, `gh` for GitHub work.
 Everything degrades gracefully: a missing linter makes the hook say "unverified" rather than fail.
@@ -203,8 +215,10 @@ Maintained upstream, if you want a version someone else keeps current:
   `ln -s ~/.claude/plugins/cache/claude-armory/armory/*/skills/api-conventions/SKILL.md ~/.claude/rules/api-conventions.md`
 - **Auto memory is machine-local** and does not sync. Anything that must exist on both machines
   belongs in `CLAUDE.md` in this repo, not in auto memory.
-- `/plugin update` needs a git-backed marketplace. A local-path marketplace re-reads from disk
-  instead, which is fine for development.
+- **`plugin update` needs the qualified name**, `armory@claude-armory`. The bare `armory` works for
+  `plugin list` and `plugin details` but reports "Plugin not found" on update.
+- A local-path marketplace re-reads from disk rather than supporting update, which is fine for
+  development but means the source must be repointed at GitHub before the checkout is deleted.
 
 ## Layout
 
