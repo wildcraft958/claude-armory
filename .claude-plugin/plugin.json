@@ -11,7 +11,13 @@
   "homepage": "https://github.com/wildcraft958/claude-armory",
   "repository": "https://github.com/wildcraft958/claude-armory",
   "license": "MIT",
-  "keywords": ["workflow", "tdd", "verification", "rules", "python", "typescript"],
-  "hooks": "./hooks/hooks.json",
-  "mcpServers": "./.mcp.json"
+  "keywords": [
+    "workflow",
+    "tdd",
+    "verification",
+    "rules",
+    "python",
+    "typescript"
+  ],
+  "hooks": "./hooks/hooks.json"
 }
