@@ -18,6 +18,5 @@
     "rules",
     "python",
     "typescript"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }
