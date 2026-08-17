@@ -1,0 +1,17 @@
+{
+  "name": "armory",
+  "displayName": "claude-armory",
+  "version": "2.0.0",
+  "description": "Personal Claude Code loadout: workflow skills, path-scoped rules, one changed-files verification hook, and declarative safety permissions.",
+  "author": {
+    "name": "Animesh Raj",
+    "email": "animeshraj958@gmail.com",
+    "url": "https://github.com/wildcraft958"
+  },
+  "homepage": "https://github.com/wildcraft958/claude-armory",
+  "repository": "https://github.com/wildcraft958/claude-armory",
+  "license": "MIT",
+  "keywords": ["workflow", "tdd", "verification", "rules", "python", "typescript"],
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}

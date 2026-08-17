@@ -1,0 +1,13 @@
+{
+  "name": "claude-armory",
+  "displayName": "claude-armory",
+  "plugins": [
+    {
+      "name": "armory",
+      "displayName": "claude-armory",
+      "description": "Personal Claude Code loadout: workflow skills, path-scoped rules, one changed-files verification hook, and declarative safety permissions.",
+      "keywords": ["workflow", "tdd", "verification", "rules"],
+      "source": "./"
+    }
+  ]
+}
