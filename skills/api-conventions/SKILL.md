@@ -1,12 +1,7 @@
 ---
-paths:
-  - "**/api/**/*.py"
-  - "**/routers/**/*.py"
-  - "**/routes/**/*.py"
-  - "**/*router*.py"
-  - "**/*endpoint*.py"
-  - "**/schemas/**/*.py"
-  - "**/main.py"
+name: api-conventions
+description: FastAPI route structure, dependency injection, auth patterns, and error response formats for Python backends. Background reference for when writing or modifying API endpoints, routers, or Pydantic schemas. Skip for Node, Express, or Django backends.
+user-invocable: false
 ---
 
 # API Conventions

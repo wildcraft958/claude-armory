@@ -7,10 +7,18 @@
 # are invoked on purpose. The one job here is that Claude cannot claim a task is finished while
 # a file it just touched fails its linter.
 #
+# There is deliberately no ~/.claude/.lite bypass. Lite mode exists to skip the 10-30s
+# whole-project checks the predecessor of this script ran; a changed-files lint costs ~200ms and
+# short-circuiting it would leave the hook with no job at all. Set CLAUDE_ARMORY_SKIP_VERIFY=1
+# to disable it for a session.
+#
 # Contract: exit 2 with {"decision":"block","reason":...} blocks the stop and hands the errors
 # back to Claude. exit 0 lets it finish.
 
 INPUT=$(cat)
+
+[ -n "$CLAUDE_ARMORY_SKIP_VERIFY" ] && exit 0
+command -v jq >/dev/null 2>&1 || exit 0
 
 # Claude Code sets stop_hook_active=true on the retry after this hook blocked once. Without this
 # guard the block-fix-block cycle never terminates.
@@ -18,33 +26,36 @@ if [ "$(printf '%s' "$INPUT" | jq -r '.stop_hook_active // false')" = "true" ]; 
   exit 0
 fi
 
-# Lite mode escape hatch for low-resource machines: touch ~/.claude/.lite
-[ -f "$HOME/.claude/.lite" ] && exit 0
-
-command -v jq >/dev/null 2>&1 || exit 0
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
 
-# Only files this working tree has actually modified. Tracked changes plus new untracked files.
+# Only files this working tree has actually modified: tracked changes plus new untracked files.
 CHANGED=$(
   {
     git diff --name-only --diff-filter=ACMR HEAD 2>/dev/null
     git ls-files --others --exclude-standard 2>/dev/null
   } | sort -u
 )
-
 [ -z "$CHANGED" ] && exit 0
 
-# Keep only files that still exist and that a linter here can actually check.
-PY_FILES=$(printf '%s\n' "$CHANGED" | grep -E '\.py$' | while read -r f; do [ -f "$f" ] && printf '%s\n' "$f"; done)
-JS_FILES=$(printf '%s\n' "$CHANGED" | grep -E '\.(ts|tsx|js|jsx|mjs|cjs)$' | while read -r f; do [ -f "$f" ] && printf '%s\n' "$f"; done)
+# Keep only files that still exist and that a linter available here can check.
+PY_FILES=""
+JS_FILES=""
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  case "$f" in
+    *.py)                      PY_FILES="${PY_FILES}${f}"$'\n' ;;
+    *.ts|*.tsx|*.js|*.jsx|*.mjs|*.cjs) JS_FILES="${JS_FILES}${f}"$'\n' ;;
+  esac
+done <<< "$CHANGED"
 
 ERRORS=""
 CHECKS_RUN=0
 
 if [ -n "$PY_FILES" ] && command -v ruff >/dev/null 2>&1; then
   CHECKS_RUN=$((CHECKS_RUN + 1))
-  RUFF_OUTPUT=$(printf '%s\n' "$PY_FILES" | xargs -r ruff check 2>&1)
-  if [ $? -ne 0 ]; then
+  RUFF_OUTPUT=$(printf '%s' "$PY_FILES" | xargs -d '\n' -r ruff check 2>&1)
+  RUFF_RC=$?
+  if [ "$RUFF_RC" -ne 0 ]; then
     ERRORS="${ERRORS}ruff:
 $(printf '%s' "$RUFF_OUTPUT" | head -40)
 
@@ -53,12 +64,17 @@ $(printf '%s' "$RUFF_OUTPUT" | head -40)
 fi
 
 if [ -n "$JS_FILES" ]; then
-  # Only run eslint if this project actually configures it, otherwise npx would try to install it.
-  if ls .eslintrc .eslintrc.js .eslintrc.json .eslintrc.yml .eslintrc.cjs \
-        eslint.config.js eslint.config.mjs eslint.config.cjs eslint.config.ts >/dev/null 2>&1; then
+  # Only run eslint where the project configures it, otherwise npx would try to fetch it.
+  HAS_ESLINT=0
+  for cfg in .eslintrc .eslintrc.js .eslintrc.cjs .eslintrc.json .eslintrc.yml \
+             eslint.config.js eslint.config.mjs eslint.config.cjs eslint.config.ts; do
+    [ -f "$cfg" ] && HAS_ESLINT=1 && break
+  done
+  if [ "$HAS_ESLINT" -eq 1 ]; then
     CHECKS_RUN=$((CHECKS_RUN + 1))
-    ESLINT_OUTPUT=$(printf '%s\n' "$JS_FILES" | xargs -r npx --no-install eslint --quiet 2>&1)
-    if [ $? -ne 0 ]; then
+    ESLINT_OUTPUT=$(printf '%s' "$JS_FILES" | xargs -d '\n' -r npx --no-install eslint --quiet 2>&1)
+    ESLINT_RC=$?
+    if [ "$ESLINT_RC" -ne 0 ]; then
       ERRORS="${ERRORS}eslint:
 $(printf '%s' "$ESLINT_OUTPUT" | head -40)
 
