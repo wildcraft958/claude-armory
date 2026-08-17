@@ -1,13 +1,23 @@
 {
   "name": "claude-armory",
-  "displayName": "claude-armory",
+  "owner": {
+    "name": "Animesh Raj",
+    "email": "animeshraj958@gmail.com",
+    "url": "https://github.com/wildcraft958"
+  },
   "plugins": [
     {
       "name": "armory",
       "displayName": "claude-armory",
       "description": "Personal Claude Code loadout: workflow skills, path-scoped rules, one changed-files verification hook, and declarative safety permissions.",
-      "keywords": ["workflow", "tdd", "verification", "rules"],
+      "keywords": [
+        "workflow",
+        "tdd",
+        "verification",
+        "rules"
+      ],
       "source": "./"
     }
-  ]
+  ],
+  "description": "Animesh Raj's personal Claude Code loadout: workflow skills, path-scoped conventions, one changed-files verification hook, and declarative safety permissions. Built to lean on Claude Code's built-ins rather than duplicate them."
 }

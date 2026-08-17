@@ -1,3 +1,14 @@
+---
+paths:
+  - "**/api/**/*.py"
+  - "**/routers/**/*.py"
+  - "**/routes/**/*.py"
+  - "**/*router*.py"
+  - "**/*endpoint*.py"
+  - "**/schemas/**/*.py"
+  - "**/main.py"
+---
+
 # API Conventions
 
 > **Stack:** FastAPI (Python). Skip this doc for Node/Express, Django, or non-Python backends.

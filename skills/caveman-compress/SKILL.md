@@ -1,3 +1,11 @@
+---
+name: caveman-compress
+description: Rewrite a markdown file in place into caveman-speak to cut input tokens, preserving code blocks, URLs, paths, numbers, and structure exactly, with a .original.md backup alongside.
+argument-hint: [path to markdown file]
+disable-model-invocation: true
+allowed-tools: Read Write Edit
+---
+
 Compress the file at the path below into caveman-speak to reduce input tokens. Preserve all technical substance, code, URLs, and structure. Overwrite the original file. Save a human-readable backup as `<filename>.original.md`.
 
 ## Compression Rules

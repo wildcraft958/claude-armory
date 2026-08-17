@@ -1,3 +1,9 @@
+---
+name: debug-protocol
+description: Five-step debugging protocol (gather, hypothesize, isolate, fix, verify) for a specific bug, error, or failing test. Use when handed a stack trace, an exception, or a "why does X happen" question. Deep reference for Python, FastAPI, LangGraph, React, and Supabase failure modes lives in reference.md next to this file.
+argument-hint: [error message or description]
+---
+
 Debug the issue described below using this 5-step protocol. Do not skip steps.
 
 ## Step 1: Gather
@@ -31,5 +37,9 @@ Debug the issue described below using this 5-step protocol. Do not skip steps.
 - If the root cause was a missing validation, add the validation.
 - Log the pattern to gotchas.md if it represents a non-obvious lesson.
 - State what you changed and why in 2-3 sentences.
+
+## Stack-specific failure modes
+
+If the bug is in Python, FastAPI, LangGraph, React, or Supabase, read `${CLAUDE_PLUGIN_ROOT}/skills/debug-protocol/reference.md` for known failure modes in that stack before forming a hypothesis. Skip it for other stacks.
 
 $ARGUMENTS

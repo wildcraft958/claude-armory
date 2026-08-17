@@ -1,3 +1,10 @@
+---
+name: retire
+description: "Retire a software project cleanly and completely, in dependency order - secrets first, then data, then code, then infra. Use when decommissioning, shutting down, or archiving a project."
+argument-hint: [project name or path]
+disable-model-invocation: true
+---
+
 You are helping retire a software project cleanly and completely. Walk through every layer of cleanup in the correct order (secrets first, then data, then code, then infra).
 
 Project name / path from arguments: $ARGUMENTS

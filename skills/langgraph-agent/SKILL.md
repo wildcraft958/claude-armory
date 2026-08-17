@@ -1,3 +1,9 @@
+---
+name: langgraph-agent
+description: Build a LangGraph agent using the standard ReAct pattern - state schema, tools, StateGraph wiring. Use when asked to create, scaffold, or restructure a LangGraph or LangChain agent. Named to avoid confusion with the built-in /agents command.
+argument-hint: [what the agent should do]
+---
+
 Build a LangGraph agent based on the description below. Follow these patterns.
 
 ## Architecture
@@ -43,5 +49,9 @@ agents/
 - Test each tool in isolation with pytest.
 - Test the full graph with a mock LLM (`FakeListChatModel` from langchain_core.language_models.fake).
 - Test state transitions by running the graph with `thread_id` and checking intermediate state.
+
+## Deeper patterns
+
+For RAG wiring, embedding choices, model loading, and streaming patterns, read `${CLAUDE_PLUGIN_ROOT}/skills/langgraph-agent/reference.md`. For current LangGraph or LangChain API details, query the `docs-langchain` MCP server rather than relying on either file.
 
 $ARGUMENTS

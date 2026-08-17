@@ -1,3 +1,9 @@
+---
+name: explain
+description: Explain code at four levels of depth (TL;DR, how it works, why it is built this way, what could break). Use when asked to explain, walk through, or onboard onto a file, function, or subsystem.
+argument-hint: [file or symbol]
+---
+
 Explain the code specified below at four levels of depth. Be precise, not verbose.
 
 ## Level 1: TL;DR
