@@ -1,3 +1,9 @@
+---
+name: axon
+description: How to drive the Axon MCP tools for cross-file refactors, symbol renames, blast-radius and impact analysis, dead code detection, call-path tracing, and architecture review. Background reference for when an Axon tool is the right instrument, not an action to invoke.
+user-invocable: false
+---
+
 # Axon Code Intelligence Guide
 
 > **Stack:** Any. Axon works on Python, TypeScript, Rust, and Go codebases. Requires `axon analyze` to have been run first.

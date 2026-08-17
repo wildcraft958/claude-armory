@@ -1,3 +1,9 @@
+---
+name: test
+description: Write tests in strict Arrange-Act-Assert form, one behavior per test, no mocking of internals. Use when asked to add or write tests for existing code. For building a feature test-first instead, use the tdd skill.
+argument-hint: [file or function to test]
+---
+
 Write tests for the code specified below. Follow these rules strictly.
 
 ## Format: Arrange-Act-Assert

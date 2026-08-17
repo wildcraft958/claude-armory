@@ -1,3 +1,9 @@
+---
+name: project-architecture
+description: Project structure and feature-scaffolding conventions for FastAPI backends and React frontends - directory layout, module boundaries, where new code belongs. Background reference for when starting a feature or working in an unfamiliar layout.
+user-invocable: false
+---
+
 # Architecture Patterns
 
 > **Stack:** FastAPI + React (full-stack Python/TS). Structure principles are broadly applicable; backend-specific sections assume FastAPI.

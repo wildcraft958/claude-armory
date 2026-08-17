@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/verify-changed.sh",
+            "timeout": 60,
+            "statusMessage": "Checking changed files..."
+          }
+        ]
+      }
+    ]
+  }
+}
