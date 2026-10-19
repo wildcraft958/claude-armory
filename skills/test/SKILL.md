@@ -1,6 +1,7 @@
 ---
 name: test
 description: Write tests in strict Arrange-Act-Assert form, one behavior per test, no mocking of internals. Use when asked to add or write tests for existing code. For building a feature test-first instead, use the tdd skill.
+disable-model-invocation: true
 argument-hint: [file or function to test]
 ---
 

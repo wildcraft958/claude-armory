@@ -1,6 +1,7 @@
 ---
 name: debug-protocol
 description: Five-step debugging protocol (gather, hypothesize, isolate, fix, verify) for a specific bug, error, or failing test. Use when handed a stack trace, an exception, or a "why does X happen" question. Deep reference for Python, FastAPI, LangGraph, React, and Supabase failure modes lives in reference.md next to this file.
+disable-model-invocation: true
 argument-hint: [error message or description]
 ---
 

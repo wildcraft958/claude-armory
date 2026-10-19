@@ -1,6 +1,7 @@
 ---
 name: tdd
 description: Build features using Red-Green-Refactor vertical slices. Use this skill whenever you're implementing a feature, function, or module and want honest, behavior-driven tests that actually catch bugs instead of mocking internals. Works best for non-frontend backend features, algorithms, business logic, and data transformations. Triggers on phrases like "implement this feature," "write a function," "build this module," or any request for working, tested code.
+disable-model-invocation: true
 ---
 
 # Test-Driven Development (TDD): Vertical Slices
